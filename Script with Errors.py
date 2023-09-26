@@ -25,7 +25,7 @@ logger.setLevel(logging.DEBUG)
 
 # Define a custom log format without %(asctime)s
 log_format = logging.Formatter('[%(levelname)s] [%(pathname)s:%(lineno)d] - %(message)s - [%(process)d:%(thread)d]')
-
+z
 file_handler = logging.FileHandler('george_midjourney_automation_log.log', mode='a')  # Create file handler
 file_handler.setFormatter(log_format)  # Set log format for file handler
 logger.addHandler(file_handler)  # Add file handler to logger
@@ -145,62 +145,46 @@ def get_openai_api_key():
 
 @eel.expose
 async def download_upscaled_images(page, prompt_text: str):
-    """
-    Function to download the upscaled images.
-
-    Parameters:
-    - page: The page to operate on.
-    - prompt_text (str): The text of the prompt to use as the image name.
-
-    Returns:
-    - None
-    """
-    # Create TOP_BOT_IMAGES folder if it doesn't exist
+    """Function to download the upscaled images."""
     if not os.path.exists(TOP_BOT_IMAGES):
         os.makedirs(TOP_BOT_IMAGES)
+
     try:
         messages = await page.query_selector_all(".messageListItem-ZZ7v6g")
-        last_four_messages = messages[-4:]
-        
-        for message in last_four_messages:
+        last_ten_messages = messages[-10:]
+
+        for message in last_ten_messages:
             message_text = await message.evaluate_handle('(node) => node.innerText')
             message_text = str(message_text)
 
         if 'Vary (Strong)' in message_text and 'Web' in message_text:
             try:
                 image_elements = await page.query_selector_all('.originalLink-Azwuo9')
-                last_four_images = image_elements[-4:]
+                last_ten_images = image_elements[-10:]
 
-                for image in last_four_images:
+                for image in last_ten_images:
                     src = await image.get_attribute('href')
                     url = src
                     response = re.sub(r'[^a-zA-Z0-9\s]', '', prompt_text)
-                    response = response.replace(' ', '_').replace(',', '_')
+                    response = response.replace(' ', '').replace(',', '')
                     response = re.sub(r'[\<>:"/|?*]', '', response)
                     response = response.replace('\n\n', '_')
                     response = response[:50].rstrip('. ')
                     download_response = requests.get(url, stream=True)
 
                     if download_response.status_code == 200:
-                        image_identifier = str(uuid.uuid1())  # Generate a UUID for the image and CSV entry
-
-                        # Save the downloaded image with the same identifier
+                        image_identifier = str(uuid.uuid1())
                         image_filename = f'{TOP_BOT_IMAGES}/{image_identifier}.png'
                         with open(image_filename, 'wb') as f:
                             shutil.copyfileobj(download_response.raw, f)
                             logger.info(f'Successfully downloaded image: {image_filename}')
-                    
-                        # Write image details to CSV with the same identifier
-                        csv_entry = f'{image_identifier}.png, {prompt_text}, 5.2'
-                        with open('image_details.csv', 'a') as csv_file:
-                            csv_file.write(csv_entry + '\n')
 
+                        # Use the write_image_details function to save metadata in the correct format
+                        write_image_details(image_filename, prompt_text, '5.2')
             except Exception as e:
                 logger.exception(f"An error occurred while downloading the images: {e}")
-
         else:
             await download_upscaled_images(page, prompt_text)
-
     except Exception as e:
         logger.exception(f"An error occurred while finding the last message: {e}")
 
@@ -358,34 +342,27 @@ def gpt3_midjourney_prompt_to_generate_keywords(prompt: str) -> list:
         raise e
 
 def write_image_details(image_name, prompt, model, title=None, keywords=None):
-    # Create TOP_BOT_IMAGES folder if it doesn't exist
     if not os.path.exists(TOP_BOT_IMAGES):
         os.makedirs(TOP_BOT_IMAGES)
-    file_path = f"{TOP_BOT_IMAGES}/metadata.csv"
 
-    # Check if file already exists
+    file_path = f"{TOP_BOT_IMAGES}/metadata.csv"
     file_exists = os.path.isfile(file_path)
 
-    # Open the file in append mode
     with open(file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
 
-        # If the file doesn't exist, write the headers
         if not file_exists:
             writer.writerow(["File name", "Title", "Keywords", "Prompt", "Model"])
 
-        # Generate title and keywords if not provided
         if not title:
             title = gpt3_midjourney_prompt_to_generate_title(f"You're a museum director, write a title for this photo with the Midjourney prompt {prompt}. Be professional and formal. Don't use slang, emojis, or excessive punctuation and exclamation marks. Ensure that you don't add quotation marks around the title.")
-            # Remove quotation marks from the title
             title = title.replace('"', '')
 
         if not keywords:
-            keywords_prompt = f"prompt = Write an 20 keywords for this photo with the Midjourney prompt {prompt}.Focus on the theme/topic not on the image type or description, I need keywords about the topic/theme of the images. Be professional and formal. Don't use slang, emojis, or excessive punctuation and exclamation marks. Ensure you add commas between each keyword."
+            keywords_prompt = f"prompt = Write 20 keywords for this photo with the Midjourney prompt {prompt}. Focus on the theme/topic not on the image type or description, I need keywords about the topic/theme of the images. Be professional and formal. Don't use slang, emojis, or excessive punctuation and exclamation marks. Ensure you add commas between each keyword."
             keywords = gpt3_midjourney_prompt_to_generate_keywords(keywords_prompt)
-            keywords = ', '.join(keywords) # Assuming keywords are returned as a list
+            keywords = ', '.join(keywords)
 
-        # Write the details to the file
         writer.writerow([image_name, title, keywords, prompt, model])
 
 @eel.expose

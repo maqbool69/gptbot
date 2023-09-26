@@ -1,0 +1,80 @@
+body {
+  background-color: #90ee90;
+}
+.title {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.uniName {
+  background-color: black;
+  color: mediumturquoise;
+}
+.horizontal {
+  display: flex;
+}
+.uniImg {
+  width: 700px;
+
+  height: 250px;
+}
+
+.field {
+  width: 100%;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.imgClass {
+  width: 348px;
+  height: 60%;
+}
+.gender {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  align-items: center;
+}
+.firstName {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  align-items: center;
+}
+.lastname {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  align-items: center;
+}
+.pass {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  align-items: center;
+}
+.email {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  align-items: center;
+}
+.employSelect {
+  display: flex;
+  margin-left: 250px;
+  align-items: center;
+}
+.entry {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.postal {
+  margin-left: 500px;
+}

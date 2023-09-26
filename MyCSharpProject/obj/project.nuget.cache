@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "TS7p2nADvzTyXAJAIG9EuenM3nQ4X+CXXOfAdAViGceKwyc4kJr5v85L0erhDnkphJ9Iwj7s+ICy3NXwLcz+qw==",
+  "success": true,
+  "projectFilePath": "D:\\fiverr_csv_resolve\\MyCSharpProject\\BucketACLExample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Maqbool\\.nuget\\packages\\awssdk.core\\3.7.3.33\\awssdk.core.3.7.3.33.nupkg.sha512",
+    "C:\\Users\\Maqbool\\.nuget\\packages\\awssdk.s3\\3.7.4\\awssdk.s3.3.7.4.nupkg.sha512",
+    "C:\\Users\\Maqbool\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512",
+    "C:\\Users\\Maqbool\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\Maqbool\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\Maqbool\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\Maqbool\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
+  ],
+  "logs": []
+}

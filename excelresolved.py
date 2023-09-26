@@ -14,10 +14,11 @@ while True:
     # Read the Excel file again into a DataFrame
     df = pd.read_excel(file_path)
 
-    # Select the 'High', 'Max', and 'Trading Symbol' columns from the DataFrame
+    # Select the 'High' and 'Max' columns from the DataFrame
     high_column = df['High']
     max_column = df['Max']
     trading_symbol_column = df['Trading Symbol']
+
 
     # Compare each cell's value with its previous value
     for cell_index, current_value in enumerate(high_column):
@@ -26,10 +27,9 @@ while True:
         if previous_value is not None and current_value > previous_value:
             # Increment the corresponding 'Max' column value by 1
             max_column.at[cell_index] += 1
-
-            # Print the row number, 'Max' column value, and 'Trading Symbol' value
             print(f"Row {cell_index + 2}: Incremented 'Max' column value to {max_column.at[cell_index]}")
             print(f"Trading Symbol: {trading_symbol_column.at[cell_index]}")
+
 
         # Update the previous value for this cell
         previous_values[cell_index] = current_value
@@ -38,4 +38,4 @@ while True:
     df.to_excel(file_path, index=False, engine='xlsxwriter')
 
     # Wait for 5 seconds before checking again
-    time.sleep(10)
+    time.sleep(15)

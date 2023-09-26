@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Maqbool\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Maqbool\\.nuget\\packages"
+    ]
+  }
+}
